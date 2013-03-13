@@ -35,6 +35,7 @@ public class ExecHandler {
 	public static ExecutionResult execCommand(ConnectionData connectionData, Command command) throws JSchException, IOException{
 		ExecutionResult result = null;
 		if(connectionData!=null && command!=null){
+			OutputStream out = null;
 			JSch jsch = new JSch();
 			Session session = jsch.getSession(
 					connectionData.getUsername(), 
@@ -48,11 +49,11 @@ public class ExecHandler {
 			InputStream in = channel.getInputStream();
 			if(command.isSudo()){
 				((ChannelExec)channel).setCommand("sudo -S -p '' "+command.getCommand());
-				OutputStream out=channel.getOutputStream();
+				out=channel.getOutputStream();
 				channel.connect();				
 				//And put the sudo password
 				out.write((connectionData.getUserInfo().getPassword()+"\n").getBytes());
-			    out.flush();
+				out.flush();			    
 			}else{				
 				((ChannelExec) channel).setCommand(command.getCommand());
 				
@@ -83,6 +84,12 @@ public class ExecHandler {
 			}			
 			channel.disconnect();
 			session.disconnect();
+			if(in!=null){
+				in.close();
+			}		
+			if(out!=null){
+		    	out.close();
+		    }
 			
 			result = new ExecutionResult(total, exitCode);
 		}
