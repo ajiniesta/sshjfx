@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -23,19 +24,9 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <ScrollPane fx:id="scrollPaneButtons" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                          <children>
-                            <Button layoutX="99.0" layoutY="129.0" mnemonicParsing="false" text="Button" />
-                            <Button layoutX="66.0" layoutY="49.0" mnemonicParsing="false" text="Button" />
-                            <Button layoutX="24.0" layoutY="119.0" mnemonicParsing="false" text="Button">
-                              <graphic>
-                                <Circle fill="DODGERBLUE" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
-                              </graphic>
-                            </Button>
-                          </children>
-                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                       </content>
                     </ScrollPane>
                   </children>
@@ -52,33 +43,62 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
-                                <GridPane layoutY="14.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="184.0" prefWidth="277.0" AnchorPane.leftAnchor="15.0">
+                                <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                   <children>
-                                    <Label text="Port:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <GridPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="296.0" prefWidth="277.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                      <children>
+                                        <Label text="Port:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                          <GridPane.margin>
+                                            <Insets right="10.0" fx:id="x1" />
+                                          </GridPane.margin>
+                                        </Label>
+                                        <Label text="Host:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                                        <Label prefHeight="20.000091552734375" text="User name:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                        <Label text="Password:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                        <TextField fx:id="textFieldHost" prefWidth="200.0" promptText="Host" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <TextField fx:id="textFieldPort" prefWidth="200.0" promptText="Port" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textFieldUsername" prefWidth="200.0" promptText="User Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <PasswordField fx:id="passwordField" prefWidth="200.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                          <children>
+                                            <Button mnemonicParsing="false" onAction="#handleSaveConnectionDataAction" text="Save" />
+                                          </children>
+                                        </HBox>
+                                      </children>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-1.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                    </GridPane>
+                                    <ListView fx:id="listViewConnections" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                      <contextMenu>
+                                        <ContextMenu>
+                                          <items>
+                                            <MenuItem mnemonicParsing="false" onAction="#handleEditConnectionAction" text="Edit" />
+                                            <MenuItem mnemonicParsing="false" onAction="#handleRemoveConnectionAction" text="Remove ..." />
+                                          </items>
+                                        </ContextMenu>
+                                      </contextMenu>
                                       <GridPane.margin>
-                                        <Insets right="10.0" fx:id="x1" />
+                                        <Insets left="10.0" right="10.0" />
                                       </GridPane.margin>
-                                    </Label>
-                                    <Label text="Host:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                                    <Label prefHeight="20.000091552734375" text="User name:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                    <Label text="Password:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                    <TextField fx:id="textFieldHost" prefWidth="200.0" promptText="Host" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <TextField fx:id="textFieldPort" prefWidth="200.0" promptText="Port" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textFieldUsername" prefWidth="200.0" promptText="User Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <PasswordField fx:id="passwordField" prefWidth="200.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" onAction="#handleSaveConnectionDataAction" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                                    </ListView>
                                   </children>
                                   <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   </columnConstraints>
                                   <rowConstraints>
-                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   </rowConstraints>
                                 </GridPane>
                               </children>
@@ -96,35 +116,70 @@
                                   <children>
                                     <TableView fx:id="tableViewCommands" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                       <columns>
-                                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="253.0" text="Command Name" fx:id="tableColumnCommandName" />
+                                        <TableColumn prefWidth="75.0" text="Name" />
+                                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="97.0" text="Connection" />
+                                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="154.0" text="Command Name" fx:id="tableColumnCommandName" />
                                         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="54.0" text="Sudo?" fx:id="tableColumnSudo" />
                                       </columns>
+                                      <contextMenu>
+                                        <ContextMenu>
+                                          <items>
+                                            <MenuItem mnemonicParsing="false" onAction="#handleEditCommandAction" text="Edit" />
+                                            <MenuItem mnemonicParsing="false" onAction="#handleRemoveCommandAction" text="Remove ..." />
+                                          </items>
+                                        </ContextMenu>
+                                      </contextMenu>
                                     </TableView>
                                     <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
                                       <children>
                                         <Label text="Command Details" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                                        <Label prefHeight="20.000091552734375" text="Comand:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                        <Label prefHeight="20.000091552734375" text="Comand:" GridPane.columnIndex="0" GridPane.rowIndex="2">
                                           <GridPane.margin>
                                             <Insets left="10.0" fx:id="x3" />
                                           </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="textFieldCommand" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <TextField fx:id="textFieldNameCommand" prefWidth="200.0" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                           <GridPane.margin>
                                             <Insets right="10.0" fx:id="x1" />
                                           </GridPane.margin>
                                         </TextField>
-                                        <CheckBox fx:id="checkBoxSudo" mnemonicParsing="false" text="Is Sudo?" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.margin="$x3" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="3">
+                                        <TextField fx:id="textFieldCommand" prefWidth="200.0" promptText="Command" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <GridPane.margin>
+                                            <Insets right="10.0" fx:id="x1" />
+                                          </GridPane.margin>
+                                        </TextField>
+                                        <CheckBox fx:id="checkBoxSudo" mnemonicParsing="false" text="Is Sudo?" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.margin="$x3" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                        <ComboBox prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                              <String fx:value="Item 1" />
+                                              <String fx:value="Item 2" />
+                                              <String fx:value="Item 3" />
+                                            </FXCollections>
+                                          </items>
+                                        </ComboBox>
+                                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                           <children>
                                             <Button mnemonicParsing="false" onAction="#handleSaveCommandAction" text="Save" />
                                           </children>
+                                          <GridPane.margin>
+                                            <Insets right="10.0" fx:id="x1" />
+                                          </GridPane.margin>
                                         </HBox>
+                                        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                          <GridPane.margin>
+                                            <Insets left="10.0" fx:id="x3" />
+                                          </GridPane.margin>
+                                        </Label>
+                                        <Label text="Connection:" GridPane.columnIndex="0" GridPane.margin="$x3" GridPane.rowIndex="4" />
                                       </children>
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="28.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                       </columnConstraints>
                                       <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
