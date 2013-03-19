@@ -32,7 +32,15 @@ import com.jcraft.jsch.Session;
  */
 public class ExecHandler {
 	
-	public static ExecutionResult execCommand(ConnectionData connectionData, Command command) throws JSchException, IOException{
+	private ConnectionData connectionData;
+	private Command command;
+
+	public ExecHandler(ConnectionData connectionData, Command command){
+		this.connectionData = connectionData;
+		this.command = command;
+	}
+	
+	public ExecutionResult execCommand() throws JSchException, IOException{
 		ExecutionResult result = null;
 		if(connectionData!=null && command!=null){
 			OutputStream out = null;

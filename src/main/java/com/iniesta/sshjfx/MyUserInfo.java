@@ -16,6 +16,10 @@
  */
 package com.iniesta.sshjfx;
 
+import java.util.concurrent.CountDownLatch;
+
+import javafx.application.Platform;
+
 import com.iniesta.layerfx.Dialog;
 import com.iniesta.layerfx.Dialog.Input;
 import com.iniesta.layerfx.Dialog.Type;
@@ -45,10 +49,26 @@ public class MyUserInfo implements UserInfo{
 		return true;
 	}
 
-	public boolean promptPassword(String msg) {		
+	public boolean promptPassword(final String msg) {		
 		boolean prompt = passwd!=null;
 		if(!prompt){
-			this.passwd = Dialog.showInputDialog(Input.PASSWORDFIELD, msg);
+			if(Platform.isFxApplicationThread()){
+				this.passwd = Dialog.showInputDialog(Input.PASSWORDFIELD, msg);
+			}else{
+				final CountDownLatch latch = new CountDownLatch(1);
+				Platform.runLater(new Runnable() {					
+					@Override
+					public void run() {
+						passwd = Dialog.showInputDialog(Input.PASSWORDFIELD, msg);
+						latch.countDown();
+					}
+				});
+				try {
+					latch.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		prompt = passwd!=null;
 		return prompt;
@@ -59,8 +79,17 @@ public class MyUserInfo implements UserInfo{
 		return true;
 	}
 
-	public void showMessage(String msg) {
-		Dialog.showAlert(Type.INFO, msg);
+	public void showMessage(final String msg) {
+		if(Platform.isFxApplicationThread()){
+			Dialog.showAlert(Type.INFO, msg);
+		}else{
+			Platform.runLater(new Runnable() {				
+				@Override
+				public void run() {
+					Dialog.showAlert(Type.INFO, msg);					
+				}
+			});
+		}
 	}
 
 	/* (non-Javadoc)

@@ -22,20 +22,36 @@ package com.iniesta.sshjfx;
  */
 public class Command {
 
+	private String name;
 	private String command;
 	private boolean sudo;
 	
 	public Command(String command) {
-		this(command, false);
+		this(command, command, false);
 	}
 	/**
 	 * @param command
+	 * @param command2 
 	 * @param sudo
 	 */
-	public Command(String command, boolean sudo) {
+	public Command(String name, String command, boolean sudo) {
 		super();
+		this.name = name;
 		this.command = command;
 		this.sudo = sudo;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 	/**
 	 * @return the command
@@ -69,6 +85,7 @@ public class Command {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((command == null) ? 0 : command.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + (sudo ? 1231 : 1237);
 		return result;
 	}
@@ -89,6 +106,11 @@ public class Command {
 				return false;
 		} else if (!command.equals(other.command))
 			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (sudo != other.sudo)
 			return false;
 		return true;
@@ -98,7 +120,7 @@ public class Command {
 	 */
 	@Override
 	public String toString() {
-		return "Command [command=" + command + ", sudo=" + sudo + "]";
+		return "Command [name=" + name + ", command=" + command + ", sudo=" + sudo + "]";
 	}
-	
+		
 }
